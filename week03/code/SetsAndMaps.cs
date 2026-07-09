@@ -22,7 +22,23 @@ public static class SetsAndMaps
     public static string[] FindPairs(string[] words)
     {
         // TODO Problem 1 - ADD YOUR CODE HERE
-        return [];
+        var uniqueWords = words.ToHashSet();
+        var pairs = new List<string>();
+
+        while (uniqueWords.Count > 0)
+        {
+            string word = uniqueWords.First();
+            uniqueWords.Remove(word);
+
+            string reverse = string.Concat(word[1], word[0]);
+
+            if (uniqueWords.Contains(reverse))
+            {
+                pairs.Add($"{word} & {reverse}");
+                uniqueWords.Remove(reverse);
+            }
+        }
+        return pairs.ToArray();
     }
 
     /// <summary>
@@ -43,6 +59,9 @@ public static class SetsAndMaps
         {
             var fields = line.Split(",");
             // TODO Problem 2 - ADD YOUR CODE HERE
+            string degree = fields[3];
+
+            degrees[degree] = degrees.GetValueOrDefault(degree) + 1;
         }
 
         return degrees;
@@ -67,7 +86,49 @@ public static class SetsAndMaps
     public static bool IsAnagram(string word1, string word2)
     {
         // TODO Problem 3 - ADD YOUR CODE HERE
-        return false;
+
+        var letterMap = new Dictionary<char, int>();
+        int remaining = 0;
+
+
+        /* 
+        I forwent the full formatting passes to see if it would improve constant time from 6n to 2n,
+        Technically both count as O(n) but I wanted to test.
+        The only problem is this sacrifices readability for performance.
+         */
+        // Func<string, string> Formatter = word => word.ToLower().Replace(" ", "");
+        // word1 = Formatter(word1);
+        // word2 = Formatter(word2);
+        // if (word1.Length != word2.Length) return false; // remaining is not necessary if this is used.
+
+        foreach (char c in word1)
+        {
+            // Formatting check/pass
+            if (c == ' ') continue;
+            char ch = char.ToLowerInvariant(c);
+            // 
+
+            letterMap[ch] = letterMap.GetValueOrDefault(ch) + 1;
+
+            remaining++;
+        }
+
+        foreach (char c in word2)
+        {
+            // Formatting check/pass
+            if (c == ' ') continue;
+            char ch = char.ToLowerInvariant(c);
+            // 
+
+            if (!letterMap.TryGetValue(ch, out int counter) || counter == 0)
+                return false;
+
+            letterMap[ch] = counter - 1;
+
+            remaining--;
+        }
+
+        return remaining == 0;
     }
 
     /// <summary>
@@ -100,7 +161,14 @@ public static class SetsAndMaps
         // 1. Add code in FeatureCollection.cs to describe the JSON using classes and properties 
         // on those classes so that the call to Deserialize above works properly.
         // 2. Add code below to create a string out each place a earthquake has happened today and its magitude.
+        var earthquakes = new List<string>();
+
+        foreach (var feature in featureCollection.Features)
+        {
+            earthquakes.Add($"{feature.Properties.Place} - Mag {feature.Properties.Mag}");
+        }
+
         // 3. Return an array of these string descriptions.
-        return [];
+        return earthquakes.ToArray();
     }
 }

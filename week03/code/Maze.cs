@@ -26,6 +26,7 @@ public class Maze
     }
 
     // TODO Problem 4 - ADD YOUR CODE HERE
+    private bool[] Directions => _mazeMap[(_currX, _currY)];
     /// <summary>
     /// Check to see if you can move left.  If you can, then move.  If you
     /// can't move, throw an InvalidOperationException with the message "Can't go that way!".
@@ -33,6 +34,10 @@ public class Maze
     public void MoveLeft()
     {
         // FILL IN CODE
+        if (!Directions[0])
+            throw new InvalidOperationException("Can't go that way!");
+
+        _currX--;
     }
 
     /// <summary>
@@ -42,6 +47,10 @@ public class Maze
     public void MoveRight()
     {
         // FILL IN CODE
+        if (!Directions[1])
+            throw new InvalidOperationException("Can't go that way!");
+
+        _currX++;
     }
 
     /// <summary>
@@ -51,6 +60,10 @@ public class Maze
     public void MoveUp()
     {
         // FILL IN CODE
+        if (!Directions[2])
+            throw new InvalidOperationException("Can't go that way!");
+
+        _currY--;
     }
 
     /// <summary>
@@ -60,6 +73,10 @@ public class Maze
     public void MoveDown()
     {
         // FILL IN CODE
+        if (!Directions[3])
+            throw new InvalidOperationException("Can't go that way!");
+
+        _currY++;
     }
 
     public string GetStatus()
