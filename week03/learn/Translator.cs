@@ -36,7 +36,6 @@ public class Translator
     public string Translate(string fromWord)
     {
         // ADD YOUR CODE HERE
-        // return _words[fromWord] ?? "???";
         return _words.TryGetValue(fromWord, out string word) ? word : "???";
     }
 }
